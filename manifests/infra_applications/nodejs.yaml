@@ -1,0 +1,21 @@
+kind: Application
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: nodejs
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/salamirangerover/node-app-chart.git
+    targetRevision: HEAD
+    path: .
+    targetRevision: "1.0"
+
+    
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
