@@ -4,9 +4,9 @@ server:
       namespace: argocd
       project: default
       source:
-        repoURL: https://github.com/salamirangerover/gcp-helm-project.git
+        repoURL: https://github.com/salamirangerover/gcp-gitops-project.git
         targetRevision: HEAD
-        path: manifests/applications/infra
+        path: manifests/_init/applications
         directory:
           recurse: true
       destination:
@@ -16,27 +16,6 @@ server:
         automated:
           prune: false
           selfHeal: false
-      syncOptions:
-        - PruneLast=true
-        - CreateNamespace=true
-        - ServerSideApply=true
-
-    - name: nodejs-app
-      namespace: argocd
-      project: default
-      source:
-        repoURL: https://github.com/salamirangerover/node-app-chart
-        targetRevision: HEAD
-        path: .
-        directory:
-          recurse: true
-      destination:
-        namespace: nodejs
-        server: https://kubernetes.default.svc
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
       syncOptions:
         - PruneLast=true
         - CreateNamespace=true
