@@ -1,17 +1,43 @@
 server:
   additionalApplications:
-    - name: cluster-config
+    - name: cluster-init
       namespace: argocd
       project: default
       source:
-        repoURL: https://github.com/salamirangerover/gcp-helm-provider.git
+        repoURL: https://github.com/salamirangerover/gcp-helm-project.git
         targetRevision: HEAD
-        path: manifests/infra_applications
+        path: manifests/applications/infra
         directory:
           recurse: true
       destination:
+        namespace: cluster-init
         server: https://kubernetes.default.svc
       syncPolicy:
         automated:
           prune: false
           selfHeal: false
+      syncOptions:
+        - PruneLast=true
+        - CreateNamespace=true
+        - ServerSideApply=true
+
+    - name: nodejs-app
+      namespace: argocd
+      project: default
+      source:
+        repoURL: https://github.com/salamirangerover/node-app-chart
+        targetRevision: HEAD
+        path: .
+        directory:
+          recurse: true
+      destination:
+        namespace: nodejs
+        server: https://kubernetes.default.svc
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+      syncOptions:
+        - PruneLast=true
+        - CreateNamespace=true
+        - ServerSideApply=true
